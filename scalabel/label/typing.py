@@ -78,16 +78,19 @@ class Label(BaseModel):
     score: Optional[float] = None
     attributes: Optional[Dict[str, Union[bool, int, float, str]]] = None
     category: Optional[str] = None
-    box2d: Optional[Box2D]
-    box3d: Optional[Box3D]
-    poly2d: Optional[List[Poly2D]]
-    rle: Optional[RLE]
-    graph: Optional[Graph]
+    box2d: Optional[Box2D] = None
+    box3d: Optional[Box3D] = None
+    poly2d: Optional[List[Poly2D]] = None
+    rle: Optional[RLE] = None
+    graph: Optional[Graph] = None
 
     def __init__(self, **data: Any) -> None:  # type: ignore
         """Init structure and convert the id type to string."""
         if "id" in data:
             data["id"] = str(data["id"])
+        annots = ["box2d", "box3d", "poly2d", "rle", "graph"]
+        assert any([field in data for field in annots]),\
+            f"Label must be initialized with at least on of {annots}"
         super().__init__(**data)
 
 
@@ -146,9 +149,9 @@ class Category(BaseModel):
     """Define Scalabel label attributes."""
 
     name: str
-    subcategories: Optional[List["Category"]]
+    subcategories: Optional[List["Category"]] = None
     isThing: Optional[bool] = None  # for panoptic segmentation
-    color: Optional[Tuple[float, float, float]]
+    color: Optional[Tuple[float, float, float]] = None
 
 
 Category.update_forward_refs()
@@ -170,9 +173,9 @@ class Config(BaseModel):
 
     # optional image size info to make memory pre-allocation possible
     imageSize: Optional[ImageSize]
-    attributes: Optional[List[Attribute]]
+    attributes: Optional[List[Attribute]] = None
     categories: List[Category]
-    poseSigmas: Optional[List[float]]
+    poseSigmas: Optional[List[float]] = None
 
 
 class FrameGroup(Frame):
