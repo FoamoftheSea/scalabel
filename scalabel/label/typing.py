@@ -128,7 +128,7 @@ class Frame(BaseModel):
     """Frame."""
 
     name: str
-    url: Optional[str]
+    url: Optional[str] = None
     videoName: Optional[str] = None
     intrinsics: Optional[Intrinsics] = None
     extrinsics: Optional[Extrinsics] = None
@@ -188,5 +188,5 @@ class Dataset(BaseModel):
     """Define dataset components."""
 
     frames: List[Frame]
-    groups: Optional[List[FrameGroup]]
+    groups: Optional[List[FrameGroup]] = None
     config: Optional[Config]
